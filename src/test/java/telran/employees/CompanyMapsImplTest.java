@@ -1,5 +1,11 @@
 package telran.employees;
 
-public class CompanyMapsImplTest extends CompanyTest {
+import org.junit.jupiter.api.BeforeEach;
 
+public class CompanyMapsImplTest extends CompanyTest {
+	@Override
+	@BeforeEach
+	void setCompany() {
+		company = new CompanyMapsImpl();
+	}
 }

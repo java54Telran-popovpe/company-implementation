@@ -1,54 +1,65 @@
 package telran.employees;
 
-import java.util.Iterator;
 import java.util.*;
 //So far we do consider optimization
 public class CompanyMapsImpl implements Company {
 	
 	TreeMap<Long,Employee> employees = new TreeMap<>();
-	HashMap<String, List<Employee>> employeesDepartment = new HashMap<>();
+	TreeMap<String, List<Employee>> employeesDepartment = new TreeMap<>();
 	TreeMap<Float, List<Manager>> factorManagers = new TreeMap<>();
 
 	@Override
 	public Iterator<Employee> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return employees.values().iterator();
 	}
 
 	@Override
 	public void addEmployee(Employee empl) {
-		// TODO Auto-generated method stub
+		if (employees.putIfAbsent(empl.getId(), empl) == null) {
+			employeesDepartment.computeIfAbsent(empl.getDepartment(), emp -> new LinkedList<>()).add(empl);
+			if ( empl instanceof Manager ) {
+				Manager manager = (Manager)empl;
+				factorManagers.computeIfAbsent(manager.factor, emp -> new LinkedList<>()).add(manager);
+			}
+		} else {
+			throw new IllegalStateException();
+		}
 
 	}
 
 	@Override
 	public Employee getEmployee(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return employees.get(id);
 	}
 
 	@Override
 	public Employee removeEmployee(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Employee result = null;
+		if ( ( result = employees.remove(id) ) != null ) {
+			employeesDepartment.get(result.getDepartment()).remove(result);
+			if ( result instanceof Manager ) {
+				Manager manager = (Manager)result;
+				factorManagers.get(manager.factor).remove(manager);
+			}
+		} else {
+			throw new NoSuchElementException();
+		}
+		return result;
 	}
 
 	@Override
 	public int getDepartmentBudget(String department) {
-		// TODO Auto-generated method stub
-		return 0;
+		return employeesDepartment.getOrDefault(department, new LinkedList<>()).stream().mapToInt(Employee::computeSalary).sum();
 	}
 
 	@Override
 	public String[] getDepartments() {
-		// TODO Auto-generated method stub
-		return null;
+		return employeesDepartment.keySet().stream().toArray(String[]::new);
 	}
 
 	@Override
 	public Manager[] getManagersWithMostFactor() {
-		// TODO Auto-generated method stub
-		return null;
+		return factorManagers.lastEntry().getValue().stream().toArray(Manager[]::new);
 	}
 
 }

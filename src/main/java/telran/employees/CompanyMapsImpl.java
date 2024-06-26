@@ -1,6 +1,7 @@
 package telran.employees;
 
 import java.util.*;
+import java.util.function.Function;
 //So far we do consider optimization
 public class CompanyMapsImpl implements Company {
 	
@@ -36,15 +37,24 @@ public class CompanyMapsImpl implements Company {
 	public Employee removeEmployee(long id) {
 		Employee result = null;
 		if ( ( result = employees.remove(id) ) != null ) {
-			employeesDepartment.get(result.getDepartment()).remove(result);
+			updateMapList(employeesDepartment, result, Employee::getDepartment);
 			if ( result instanceof Manager ) {
 				Manager manager = (Manager)result;
-				factorManagers.get(manager.factor).remove(manager);
+				updateMapList(factorManagers, manager, el -> el.factor );
 			}
 		} else {
 			throw new NoSuchElementException();
 		}
 		return result;
+	}
+	
+	private <T, U> void updateMapList ( Map<T,List<U>> map, U elementToDelete,Function<U,T> mapFunc ) {
+		T key = mapFunc.apply(elementToDelete);
+		List<U> list = map.get(key);
+		list.remove(elementToDelete);
+		if ( list.isEmpty() ) {
+			map.remove(key);
+		}
 	}
 
 	@Override
@@ -54,12 +64,12 @@ public class CompanyMapsImpl implements Company {
 
 	@Override
 	public String[] getDepartments() {
-		return employeesDepartment.keySet().stream().toArray(String[]::new);
+		return employeesDepartment.keySet().toArray(String[]::new);
 	}
 
 	@Override
 	public Manager[] getManagersWithMostFactor() {
-		return factorManagers.lastEntry().getValue().stream().toArray(Manager[]::new);
+		return factorManagers.lastEntry().getValue().toArray(Manager[]::new);
 	}
 
 }

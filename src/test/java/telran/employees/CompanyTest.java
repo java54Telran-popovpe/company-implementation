@@ -60,7 +60,7 @@ void setCompany() {
 		assertNull(company.getEmployee(ID4));
 	}
 
-	@Test
+	@Test	
 	void testRemoveEmployee() {
 		assertEquals(empl1, company.removeEmployee(ID1));
 		assertThrowsExactly(NoSuchElementException.class,
@@ -85,10 +85,20 @@ void setCompany() {
 		assertEquals(expected.length, index);
 		assertThrowsExactly(NoSuchElementException.class, it::next);
 	}
+//	@Test
+//	void testGetDepartments() {
+//		String [] expected = {DEPARTMENT1, DEPARTMENT2};
+//		Arrays.sort(expected);
+//		assertArrayEquals(expected, company.getDepartments());
+//	}
+//	
 	@Test
 	void testGetDepartments() {
 		String [] expected = {DEPARTMENT1, DEPARTMENT2};
 		Arrays.sort(expected);
+		assertArrayEquals(expected, company.getDepartments());
+		expected = new String[] {DEPARTMENT1};
+		company.removeEmployee(ID3);
 		assertArrayEquals(expected, company.getDepartments());
 	}
 	@Test

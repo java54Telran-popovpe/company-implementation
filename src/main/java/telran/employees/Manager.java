@@ -11,7 +11,5 @@ public class Manager extends Employee {
     public int computeSalary() {
     	return Math.round(super.computeSalary() * factor);
     }
-	
-	
-
+    
 }

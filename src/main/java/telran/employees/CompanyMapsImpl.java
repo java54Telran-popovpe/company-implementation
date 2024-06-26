@@ -1,6 +1,7 @@
 package telran.employees;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 //So far we do consider optimization
 public class CompanyMapsImpl implements Company {
@@ -27,11 +28,7 @@ public class CompanyMapsImpl implements Company {
 			@Override
 			public void remove() {
 				iterator.remove();
-				updateMapList(employeesDepartment, prev, Employee::getDepartment);
-				if ( prev instanceof Manager ) {
-					Manager manager = (Manager)prev;
-					updateMapList(factorManagers, manager, el -> el.factor );
-				}
+				updateAfterEmployeeDeletion(prev);
 			}
 			
 		};
@@ -58,26 +55,28 @@ public class CompanyMapsImpl implements Company {
 
 	@Override
 	public Employee removeEmployee(long id) {
-		Employee result = null;
-		if ( ( result = employees.remove(id) ) != null ) {
-			updateMapList(employeesDepartment, result, Employee::getDepartment);
-			if ( result instanceof Manager ) {
-				Manager manager = (Manager)result;
-				updateMapList(factorManagers, manager, el -> el.factor );
-			}
-		} else {
+		Employee result = employees.remove(id);
+		if ( result == null ) {
 			throw new NoSuchElementException();
 		}
+		updateAfterEmployeeDeletion(result);
 		return result;
+	}
+
+	private void updateAfterEmployeeDeletion(Employee employee) {
+		updateMapList(employeesDepartment, employee, Employee::getDepartment);
+		if ( employee instanceof Manager ) {
+			Manager manager = (Manager)employee;
+			updateMapList(factorManagers, manager, el -> el.factor );
+		}
 	}
 	
 	private <T, U> void updateMapList ( Map<T,List<U>> map, U elementToDelete,Function<U,T> mapFunc ) {
 		T key = mapFunc.apply(elementToDelete);
-		List<U> list = map.get(key);
-		list.remove(elementToDelete);
-		if ( list.isEmpty() ) {
-			map.remove(key);
-		}
+		map.computeIfPresent(key, (k, l) -> {
+			l.remove(elementToDelete);
+			return l.isEmpty() ? null : l;
+		});
 	}
 
 	@Override

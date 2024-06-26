@@ -11,7 +11,30 @@ public class CompanyMapsImpl implements Company {
 
 	@Override
 	public Iterator<Employee> iterator() {
-		return employees.values().iterator();
+		return new Iterator<Employee>() {
+			Iterator<Employee> iterator = employees.values().iterator();
+			Employee prev = null;
+			@Override
+			public boolean hasNext() {
+				return iterator.hasNext();
+			}
+
+			@Override
+			public Employee next() {
+				prev = iterator.next();
+				return prev;
+			}
+			@Override
+			public void remove() {
+				iterator.remove();
+				updateMapList(employeesDepartment, prev, Employee::getDepartment);
+				if ( prev instanceof Manager ) {
+					Manager manager = (Manager)prev;
+					updateMapList(factorManagers, manager, el -> el.factor );
+				}
+			}
+			
+		};
 	}
 
 	@Override

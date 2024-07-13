@@ -1,8 +1,5 @@
 package telran.employees;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public interface Company extends Iterable<Employee>{
 	public void addEmployee(Employee empl) ;

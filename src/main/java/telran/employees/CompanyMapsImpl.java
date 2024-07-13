@@ -3,8 +3,10 @@ package telran.employees;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import telran.io.Persistable;
 //So far we do consider optimization
-public class CompanyMapsImpl implements Company {
+public class CompanyMapsImpl implements Company, Persistable {
 	
 	TreeMap<Long,Employee> employees = new TreeMap<>();
 	TreeMap<String, List<Employee>> employeesDepartment = new TreeMap<>();
@@ -92,6 +94,18 @@ public class CompanyMapsImpl implements Company {
 	@Override
 	public Manager[] getManagersWithMostFactor() {
 		return factorManagers.lastEntry().getValue().toArray(Manager[]::new);
+	}
+
+	@Override
+	public void save(String filePathStr) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void restore(String filePathStr) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

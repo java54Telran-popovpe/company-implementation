@@ -1,6 +1,8 @@
 package telran.employees;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -108,13 +110,25 @@ public class CompanyMapsImpl implements Company, Persistable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-		
 	}
 
 	@Override
 	public void restore(String filePathStr) {
-		// TODO Auto-generated method stub
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePathStr))) {
+			clear();
+			reader.lines()
+					.map(Employee::setObjectFactory)
+					.forEachOrdered(CompanyMapsImpl.this::addEmployee);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 		
+	}
+
+	private void clear() {
+		employees = new TreeMap<>();
+		employeesDepartment = new TreeMap<>();
+		factorManagers = new TreeMap<>();
 	}
 
 }

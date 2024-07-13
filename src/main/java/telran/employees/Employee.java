@@ -85,6 +85,22 @@ public class Employee implements Comparable<Employee>, JSONable {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	
+	public static Employee setObjectFactory(String json) {
+		JSONObject jsonObject = new JSONObject(json);
+		String className = jsonObject.getString("className");
+		if (className == null ) {
+			throw new RuntimeException("class name missing");
+		}
+		try {
+			Employee employee = (Employee)Class.forName(className).getConstructor().newInstance();
+			employee.fillEmployee(jsonObject);
+			return employee;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	protected void fillEmployee(JSONObject jsonObject) {
 		id = jsonObject.getLong("id");

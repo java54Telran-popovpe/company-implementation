@@ -108,7 +108,7 @@ public class CompanyMapsImpl implements Company, Persistable {
 				codeWriter.println(employee.getJSON());
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} 
 	}
 
@@ -120,7 +120,7 @@ public class CompanyMapsImpl implements Company, Persistable {
 					.map(Employee::setObjectFactory)
 					.forEachOrdered(CompanyMapsImpl.this::addEmployee);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} 
 		
 	}

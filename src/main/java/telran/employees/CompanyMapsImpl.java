@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import telran.io.JSONable;
 import telran.io.Persistable;
 //So far we do consider optimization
 public class CompanyMapsImpl implements Company, Persistable {
@@ -117,7 +118,7 @@ public class CompanyMapsImpl implements Company, Persistable {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePathStr))) {
 			deleteAllEmployees();
 			reader.lines()
-					.map(Employee::setObjectFactory)
+					.map( str -> (Employee)new Employee().setObject(str))
 					.forEachOrdered(CompanyMapsImpl.this::addEmployee);
 		} catch (Exception e) {
 			throw new RuntimeException(e);

@@ -1,5 +1,8 @@
 package telran.employees;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -98,7 +101,13 @@ public class CompanyMapsImpl implements Company, Persistable {
 
 	@Override
 	public void save(String filePathStr) {
-		// TODO Auto-generated method stub
+		try (PrintWriter codeWriter = new PrintWriter(filePathStr)) {
+			for( Employee employee: this) {
+				codeWriter.println(employee.getJSON());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 		
 	}
 

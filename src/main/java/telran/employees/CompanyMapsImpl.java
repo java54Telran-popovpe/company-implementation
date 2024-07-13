@@ -115,7 +115,7 @@ public class CompanyMapsImpl implements Company, Persistable {
 	@Override
 	public void restore(String filePathStr) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePathStr))) {
-			clear();
+			deleteAllEmployees();
 			reader.lines()
 					.map(Employee::setObjectFactory)
 					.forEachOrdered(CompanyMapsImpl.this::addEmployee);
@@ -125,7 +125,7 @@ public class CompanyMapsImpl implements Company, Persistable {
 		
 	}
 
-	private void clear() {
+	private void deleteAllEmployees() {
 		employees = new TreeMap<>();
 		employeesDepartment = new TreeMap<>();
 		factorManagers = new TreeMap<>();

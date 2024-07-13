@@ -6,6 +6,11 @@ public class SalesPerson extends WageEmployee {
 	
 	float percent;
 	long sales;
+	
+	public SalesPerson() {
+		
+	}
+	
 	public SalesPerson(long id, int basicSalary, String department, int hours, int wage, float percent, long sales) {
 		super(id, basicSalary, department, hours, wage);
 		this.percent = percent;

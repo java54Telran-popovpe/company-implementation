@@ -5,6 +5,11 @@ import org.json.JSONObject;
 public class WageEmployee extends Employee {
 	private int hours;
 	private int wage; //one hour salary cost
+	
+	public WageEmployee() {
+		
+	}
+	
 	public WageEmployee(long id, int basicSalary, String department, int hours, int wage) {
 		super(id, basicSalary, department);
 		this.hours = hours;

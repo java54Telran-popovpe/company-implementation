@@ -51,7 +51,7 @@ public class CompanyMapsImpl implements Company, Persistable {
 				factorManagers.computeIfAbsent(manager.factor, emp -> new LinkedList<>()).add(manager);
 			}
 		} else {
-			throw new IllegalStateException();
+			throw new IllegalStateException("employee already exist");
 		}
 
 	}
@@ -99,7 +99,11 @@ public class CompanyMapsImpl implements Company, Persistable {
 
 	@Override
 	public Manager[] getManagersWithMostFactor() {
-		return factorManagers.lastEntry().getValue().toArray(Manager[]::new);
+		Manager[] res = new Manager[0];
+		if(!factorManagers.isEmpty()) {
+			res = factorManagers.lastEntry().getValue().toArray(res);
+		}
+		return res;
 	}
 
 	@Override
@@ -116,20 +120,14 @@ public class CompanyMapsImpl implements Company, Persistable {
 	@Override
 	public void restore(String filePathStr) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePathStr))) {
-			deleteAllEmployees();
 			reader.lines()
 					.map( str -> (Employee)new Employee().setObject(str))
-					.forEachOrdered(CompanyMapsImpl.this::addEmployee);
+					.forEach(this::addEmployee);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} 
 		
 	}
 
-	private void deleteAllEmployees() {
-		employees = new TreeMap<>();
-		employeesDepartment = new TreeMap<>();
-		factorManagers = new TreeMap<>();
-	}
 
 }

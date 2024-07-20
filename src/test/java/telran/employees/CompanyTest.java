@@ -13,38 +13,39 @@ import telran.employees.*;
 import telran.io.Persistable;
 
 abstract class CompanyTest {
-private static final long ID1 = 123;
-private static final int SALARY1 = 1000;
-private static final String DEPARTMENT1 = "QA";
-private static final long ID2 = 120;
-private static final int SALARY2 = 2000;
-private static final long ID3 = 125;
-private static final int SALARY3 = 3000;
-private static final String DEPARTMENT2 = "Development";
-private static final long ID4 = 200;
-private static final String DEPARTMENT4 = "Audit";
-private static final int WAGE1 = 100;
-private static final int HOURS1 = 10;
-private static final float FACTOR1 = 2;
-private static final float PERCENT1 = 0.01f;
-private static final long SALES1 = 10000;
-private static final float FACTOR2 = 2.5f;
-private static final long ID5 = 300;
-private static final float FACTOR3 = 3;
-private static final long ID6 = 400;
-private static final long ID7 = 500;
-private static final String EMPLOYEES_TEST_FILE = "employeeTest.data";
-Employee empl1 = new WageEmployee(ID1, SALARY1, DEPARTMENT1, WAGE1, HOURS1);
-Employee empl2 = new Manager(ID2, SALARY2, DEPARTMENT1, FACTOR1);
-Employee empl3 = new SalesPerson(ID3, SALARY3, DEPARTMENT2, WAGE1, HOURS1, PERCENT1, SALES1);
-protected Company company;
-void setCompany() {
-	//before each test there will be created new object company 
-	// with array of the given employee objects
-	 for (Employee empl: new Employee[] {empl1, empl2, empl3}) {
-		 company.addEmployee(empl);
-	 }
-}
+	
+	private static final long ID1 = 123;
+	private static final int SALARY1 = 1000;
+	private static final String DEPARTMENT1 = "QA";
+	private static final long ID2 = 120;
+	private static final int SALARY2 = 2000;
+	private static final long ID3 = 125;
+	private static final int SALARY3 = 3000;
+	private static final String DEPARTMENT2 = "Development";
+	private static final long ID4 = 200;
+	private static final String DEPARTMENT4 = "Audit";
+	private static final int WAGE1 = 100;
+	private static final int HOURS1 = 10;
+	private static final float FACTOR1 = 2;
+	private static final float PERCENT1 = 0.01f;
+	private static final long SALES1 = 10000;
+	private static final float FACTOR2 = 2.5f;
+	private static final long ID5 = 300;
+	private static final float FACTOR3 = 3;
+	private static final long ID6 = 400;
+	private static final long ID7 = 500;
+	private static final String EMPLOYEES_TEST_FILE = "employeeTest.data";
+	Employee empl1 = new WageEmployee(ID1, SALARY1, DEPARTMENT1, WAGE1, HOURS1);
+	Employee empl2 = new Manager(ID2, SALARY2, DEPARTMENT1, FACTOR1);
+	Employee empl3 = new SalesPerson(ID3, SALARY3, DEPARTMENT2, WAGE1, HOURS1, PERCENT1, SALES1);
+	protected Company company;
+	void setCompany() {
+		//before each test there will be created new object company 
+		// with array of the given employee objects
+		 for (Employee empl: new Employee[] {empl1, empl2, empl3}) {
+			 company.addEmployee(empl);
+		 }
+	}
 	@Test
 	void testAddEmployee()
 	{

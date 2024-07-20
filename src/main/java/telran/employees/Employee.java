@@ -75,9 +75,6 @@ public class Employee implements Comparable<Employee>, JSONable {
 	public JSONable setObject(String json) {
 		JSONObject jsonObject = new JSONObject(json);
 		String className = jsonObject.getString("className");
-		if (className == null ) {
-			throw new RuntimeException("class name missing");
-		}
 		try {
 			Employee employee = (Employee)Class.forName(className).getConstructor().newInstance();
 			employee.fillEmployee(jsonObject);
